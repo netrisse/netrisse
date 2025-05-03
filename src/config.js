@@ -49,6 +49,7 @@ class Config {
       fs.writeFileSync(configFile, JSON.stringify(this));
     }
     catch (error) {  // eslint-disable-line no-unused-vars
+      // 🤷
       // debug(error)
     }
   }

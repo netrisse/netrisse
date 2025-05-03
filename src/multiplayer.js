@@ -1,9 +1,12 @@
 const NetrisseClient = require('./client');
 const config = require('./config');
 const quit = require('./quit');
-const start = require('./start');
+const hallway = require('./hallway');
+const game = require('./game');
+const { debug } = require('netrisse-lib');
+const screen = require('./screen');
 
-module.exports = function(screen, seed, intro, mainBoardPosition) {
+module.exports = function(seed, intro) {
   screen.clear();
   let cursorY = 3;
 
@@ -14,11 +17,11 @@ module.exports = function(screen, seed, intro, mainBoardPosition) {
 
   screen.render();
 
-  const keyHandler = name => {
-    switch (name) {
+  const keyHandler = key => {
+    switch (key) {
       case '1':
       {
-        screen.term.removeListener('key', keyHandler);
+        screen.removeKeyHandler();
         screen.clear();
         let cursorX = 5;
         let cursorY = 3;
@@ -62,15 +65,27 @@ module.exports = function(screen, seed, intro, mainBoardPosition) {
             const client = new NetrisseClient(config.gameName);
             client.connect(seed)
               .then(() => {
-                start(null, screen, mainBoardPosition, config.speed, client);
+                game.client = client;
+                hallway(config.speed);
               })
               .catch(err => {
+                debug(err);
+
+                let errMessage;
+
+                if (Array.isArray(err.errors)) {
+                  errMessage = err.errors.map(e => e.message);
+                }
+                else {
+                  errMessage = err.message;
+                }
+
                 const errorY = gameNameInputCursor.y + 1;
                 screen.d(cursorX + 2, errorY, 'Failed to connect:', { color: 'brightred' });
-                screen.d(cursorX + 4, errorY + 1, err.errors.map(e => e.message), { color: 'brightred' });
+                screen.d(cursorX + 4, errorY + 1, errMessage, { color: 'brightred' });
                 screen.d(5, errorY + 3, '2) Back  🔙', { color: 'amber' });
                 screen.render();
-                screen.term.on('key', keyHandler);
+                screen.keyHandler = keyHandler;
               });
           });
 
@@ -79,14 +94,14 @@ module.exports = function(screen, seed, intro, mainBoardPosition) {
         break;
       }
       case '2':
-        screen.term.removeListener('key', keyHandler);
-        intro(screen, seed);
+        screen.removeKeyHandler();
+        intro(seed);
         break;
-      case 'CTRL_C': case 'ESCAPE': case 'Q': case 'q':
-        quit(screen, mainBoardPosition);
+      case 'CTRL_C': case 'ESCAPE': case 'q': case 'Q':
+        quit();
         break;
     }
   };
 
-  screen.term.on('key', keyHandler);
+  screen.keyHandler = keyHandler;
 };

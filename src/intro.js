@@ -2,10 +2,10 @@ const config = require('./config');
 const start = require('./start');
 const quit = require('./quit');
 const multiplayer = require('./multiplayer');
+const screen = require('./screen');
+const game = require('./game');
 
-module.exports = function intro(screen, seed) {
-  const mainBoardPosition = { top: 2, right: 21, bottom: 23, left: 0 };
-
+module.exports = function intro(seed) {
   let cursorY = 3;
 
   screen.clear();
@@ -16,21 +16,22 @@ module.exports = function intro(screen, seed) {
   screen.d(5, cursorY += 2, 'Q) Quit  🚪', { color: 'brightred' });
   screen.render();
 
-  const keyHandler = name => {
-    switch (name) {
+  const keyHandler = key => {
+    switch (key) {
       case '1':
-        screen.term.removeListener('key', keyHandler);
-        start(seed, screen, mainBoardPosition, config.speed, null);
+        screen.removeKeyHandler();
+        game.seed = seed;
+        start(config.speed);
         break;
       case '2':
-        screen.term.removeListener('key', keyHandler);
-        multiplayer(screen, seed, intro, mainBoardPosition);
+        screen.removeKeyHandler();
+        multiplayer(seed, intro);
         break;
-      case 'CTRL_C': case 'ESCAPE': case 'Q': case 'q':
-        quit(screen, mainBoardPosition);
+      case 'CTRL_C': case 'ESCAPE': case 'q': case 'Q':
+        quit();
         break;
     }
   };
 
-  screen.term.on('key', keyHandler);
+  screen.keyHandler = keyHandler;
 };
