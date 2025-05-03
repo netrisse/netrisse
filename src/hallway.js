@@ -79,7 +79,6 @@ function bindChatInput(top, right, bottom, left, width, chatMessageMaxLength) {
 
       if (message.trim() !== '') {
         game.client.sendMessage(messageTypeEnum.CHAT, { chatText: message });
-        // TODO: diff color for messages sent from here vs received from other players
         chat.writeMessage(config.playerName, message, true);
       }
 
