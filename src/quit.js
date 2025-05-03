@@ -1,10 +1,12 @@
-module.exports = function(screen, mainBoardPosition, game, client) {
-  if (game) {
-    for (const b of game.boards) {
-      b.stopAutoMoveTimer();
-    }
-    game.boards[0].quit();
+const game = require('./game');
+const screen = require('./screen');
+const mainBoardPosition = require('./main-board-position');
+
+module.exports = function(message) {
+  for (const b of game.boards) {
+    b.stopAutoMoveTimer();
   }
+  game.boards[0]?.quit();
 
   clearTimeout(screen.timeDisplayTimeout);
 
@@ -13,15 +15,16 @@ module.exports = function(screen, mainBoardPosition, game, client) {
   screen.term.hideCursor(false);
   // writeDebugInfo();
 
-  if (client) {
+  if (game.client) {
     // add reject timeout
-    client.ws.on('close', () => { // ensure we send disconnect to the server before we exit
-      screen.term.grabInput(false); // stop listening for input so the process exits
-    });
 
-    client.disconnect();
+    game.client.disconnect();
   }
   else {
     screen.term.grabInput(false); // stop listening for input so the process exits
+  }
+
+  if (typeof message === 'string') {
+    console.error(message);
   }
 };

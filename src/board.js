@@ -9,28 +9,29 @@ const BOARD_WIDTH = 20;
 // TODO: write game code above board in amber color
 
 module.exports = class Board {
+  concurrentExecutions = 0;
   currentShape;
   currentTimeout;
-  occupiedPoints = [];
-  concurrentExecutions = 0;
-  moves = [];
-  replay = false; // used for debugging,
-  heldShape;
-  nextShapeType = null;
-  score = 0n;
-  linesCleared = 0;
   gameOver = false;
+  heldShape;
+  linesCleared = 0;
+  moves = [];
+  nextShapeType = null;
+  occupiedPoints = [];
+  playerID;
+  replay = false; // used for debugging,
+  score = 0n;
 
-  constructor({ top, right, bottom, left }, screen, game, seed, playerID) {
+  constructor({ top, right, bottom, left }, screen, game, playerID) {
     this.top = top;
     this.right = right;
     this.bottom = bottom;
     this.left = left;
     this.screen = screen;
     this.game = game;
-    this.algorithm = game.algorithm(seed);
+    this.algorithm = game.algorithm(game.seed);
     this.playerID = playerID;
-    this.rando = new Rando(seed);
+    this.rando = new Rando(game.seed);
 
     if (this.isMainBoard) {
       this.nextBox = {};
@@ -59,9 +60,9 @@ module.exports = class Board {
     return this.game.boards.length === 0 || this.game.boards[0] === this;
   }
 
-  topBorder = '┏━━━━━━━━━━━━━━━━━━━━┓';
+  topBorder    = '┏━━━━━━━━━━━━━━━━━━━━┓';  // eslint-disable-line @stylistic/js/no-multi-spaces
   bottomBorder = '┗━━━━━━━━━━━━━━━━━━━━┛';
-  heldShapeTopBorder = '┏━━━━━━━━━━┓';
+  heldShapeTopBorder    = '┏━━━━━━━━━━┓';  // eslint-disable-line @stylistic/js/no-multi-spaces
   heldShapeBottomBorder = '┗━━━━━━━━━━┛';
 
   drawBoard() {

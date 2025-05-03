@@ -1,16 +1,23 @@
 #!/usr/bin/env node
 
 const MersenneTwister = require('mersenne-twister');
-const Screen = require('./screen');
+const screen = require('./screen');
 const intro = require('./intro');
+const quit = require('./quit');
+const { debug } = require('netrisse-lib');
 
-// multiplayer game modes:  battle (default), friendly
-// need to wait to start the game until all players are ready (2nd board is not null)
+try {
+  // multiplayer game modes:  battle (default), friendly
+  // need to wait to start the game until all players are ready (2nd board is not null)
 
-const colorEnabled = true;
-const screen = new Screen(colorEnabled);
+  screen.colorEnabled = true;
 
-const seed = new MersenneTwister().random_int();
-// const seed = 3103172451;
+  const seed = new MersenneTwister().random_int();
 
-intro(screen, seed);
+  debug(`seed: ${seed}`);
+  intro(seed);
+}
+catch (e) {
+  console.error(e);
+  quit();
+}

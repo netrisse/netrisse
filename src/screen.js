@@ -1,9 +1,13 @@
 const termkit = require('terminal-kit');
 const packageJSON = require('../package.json');
 
-module.exports = class Screen {
-  constructor(colorEnabled) {
-    this.colorEnabled = colorEnabled;
+class Screen {
+  colorEnabled;
+  screen;
+  term;
+  #keyHandler;
+
+  constructor() {
     this.term = termkit.terminal;
     this.term.windowTitle('Netrisse');
     this.screen = new termkit.ScreenBuffer({ dst: this.term, noFill: true });
@@ -27,8 +31,8 @@ module.exports = class Screen {
     this.screen.put({ x, y, attr }, content);
   }
 
-  render() {
-    this.screen.draw({ delta: false });
+  render(delta = false) {
+    this.screen.draw({ delta });
   }
 
   get(...args) {
@@ -58,4 +62,15 @@ module.exports = class Screen {
     this.screen.fill({ attr, region: this.writableArea });
     this.d(0, 0, `Netrisse ${packageJSON.version} (C) 2016  Chris de Almeida           "netrisse -h" for more info`);
   }
+
+  set keyHandler(keyHandler) {
+    this.#keyHandler = keyHandler;
+    this.term.on('key', this.#keyHandler);
+  }
+
+  removeKeyHandler() {
+    this.term.removeListener('key', this.#keyHandler);
+  }
 };
+
+module.exports = new Screen();

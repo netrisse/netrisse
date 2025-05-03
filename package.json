@@ -9,10 +9,11 @@
   },
   "scripts": {
     "circles": "madge --extensions js --circular .",
+    "debug": "DEBUG=true npm run netrisse",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "netrisse": "node ./src/netrisse.js",
-    "test": "npm run lint && npm run circles && node ./test/algorithm-test.js"
+    "test": "npm run lint && npm run circles && node ./test/algorithm-test.js && node ./test/rando-test.js"
   },
   "dependencies": {
     "mersenne-twister": "^1.1.0",

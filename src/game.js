@@ -1,16 +1,14 @@
 const { messageTypeEnum } = require('netrisse-lib');
 
-module.exports = class Game {
-  pauses = []; // array of player ids
+class Game {
+  algorithm;
   boards = [];
+  client;
+  pauses = []; // array of player ids
+  players = [];
+  seed;
+  speed;
   started = false;
-
-  constructor(speed, algorithm, client, currentPlayerID) {
-    this.speed = speed;
-    this.algorithm = algorithm;
-    this.client = client;
-    this.currentPlayerID = currentPlayerID;
-  }
 
   pause(isPausing, playerID) {
     const previousPauses = this.pauses.length;
@@ -56,7 +54,7 @@ module.exports = class Game {
   }
 
   get isPausedByThisPlayer() {
-    return this.pauses.includes(this.currentPlayerID);
+    return this.pauses.includes(this.client?.playerID);
   }
 
   start() {
@@ -103,4 +101,12 @@ module.exports = class Game {
   gameOver() {
     this.boards.forEach(b => b.quit(true));
   }
+
+  getBoardForPlayer(playerID) {
+    return this
+      .boards
+      .find(b => b.playerID === playerID);
+  }
 };
+
+module.exports = new Game();
