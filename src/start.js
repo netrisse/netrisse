@@ -19,6 +19,7 @@ module.exports = function(speed) {
   screen.term.hideCursor();
   screen.clear();
 
+  // TODO: write player names above boards
   screen.showGameInfo(game.seed, speed);
   game.speed = speed;
   game.algorithm = algorithms.frustrationFree;
@@ -30,12 +31,13 @@ module.exports = function(speed) {
     thisPlayerID = game.client.playerID;
 
     for (const player of game.players.filter(p => p.playerID !== thisPlayerID)) {
-      const xOffset = 1;
+      const xOffset = game.boards.length * 2 - 1;
+      const left = (mainBoardPosition.right * (game.boards.length + 1)) + xOffset;
       const boardPosition = {
         top: mainBoardPosition.top,
-        right: (mainBoardPosition.right * 3) + xOffset,
+        right: left + mainBoardPosition.right,
         bottom: mainBoardPosition.bottom,
-        left: (mainBoardPosition.right * 2) + xOffset,
+        left,
       };
       const b = new Board(boardPosition, screen, game, player.playerID);
       game.boards.push(b);

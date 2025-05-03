@@ -10,7 +10,14 @@ class Screen {
   constructor() {
     this.term = termkit.terminal;
     this.term.windowTitle('Netrisse');
-    this.screen = new termkit.ScreenBuffer({ dst: this.term, noFill: true });
+
+    // - set ScreenBuffer width and height to larger than the terminal might be
+    // - this prevents exceptions when calling screen.get() for points that are outside the visible terminal window
+    // - ideally people are making their screen wide enough to show all the board(s), but 🤷
+    // - 200 width is enough for seven total boards
+
+    this.screen = new termkit.ScreenBuffer({ dst: this.term, noFill: true, width: 200, height: 50 });
+
     this.term.hideCursor();
     this.term.grabInput();
   }

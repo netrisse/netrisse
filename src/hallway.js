@@ -12,6 +12,8 @@ module.exports = function() {
   // escape/sanitize input?
   // bind to a ctrl+something to start game
   // once everyone is ready, countdown?
+  // TODO: player list in hallway...
+  // TODO: rename hallway -> lobby
 
   screen.clear();
 

@@ -3,6 +3,7 @@ const Shape = require('./shape');
 const directions = require('./directions');
 const Rando = require('./rando');
 const { messageTypeEnum } = require('netrisse-lib');
+const mainBoardPosition = require('./main-board-position');
 
 const BOARD_WIDTH = 20;
 
@@ -312,11 +313,11 @@ module.exports = class Board {
     }
 
     if (this.game.isPaused) {
-      this.screen.d(24, 21, txtPaused, { color: 'brightRed' });
+      this.screen.d(24, mainBoardPosition.right, txtPaused, { color: 'brightRed' });
     }
     else {
       for (let i = 0; i < txtPaused.length; i++) {
-        this.screen.d(24 + i, 21, ' ');
+        this.screen.d(24 + i, mainBoardPosition.right, ' ');
       }
     }
 
