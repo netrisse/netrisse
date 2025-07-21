@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "eslint": "^9.4.0",
-    "eslint-config-ultra-mega": "^1.2.0",
+    "eslint-config-ultra-mega": "^2.1.0",
     "madge": "^7.0.0"
   },
   "repository": {
