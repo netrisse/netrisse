@@ -6,6 +6,7 @@ const quit = require('./quit');
 const mainBoardPosition = require('./main-board-position');
 const { messageTypeEnum } = require('netrisse-lib');
 const screen = require('./screen');
+const config = require('./config');
 
 const withResolvers = require('promise.withresolvers');
 withResolvers.shim();
@@ -23,7 +24,7 @@ module.exports = function(speed) {
   screen.showGameInfo(game.seed, speed);
   game.speed = speed;
   game.algorithm = algorithms.frustrationFree;
-  const board = new Board(mainBoardPosition, screen, game, thisPlayerID);
+  const board = new Board(mainBoardPosition, screen, game, { playerName: config.playerName, playerID: thisPlayerID });
 
   game.boards.push(board);
 
@@ -39,7 +40,7 @@ module.exports = function(speed) {
         bottom: mainBoardPosition.bottom,
         left,
       };
-      const b = new Board(boardPosition, screen, game, player.playerID);
+      const b = new Board(boardPosition, screen, game, player);
       game.boards.push(b);
       game.pause(true, player.playerID);
     }

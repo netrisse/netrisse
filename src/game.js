@@ -94,7 +94,7 @@ class Game {
       }
     }
 
-    this.client.sendMessage(messageTypeEnum.JUNK, { junkLines, toPlayerID: toBoard.playerID });
+    this.client.sendMessage(messageTypeEnum.JUNK, { junkLines, toPlayerID: toBoard.player.playerID });
     toBoard.receiveJunk(junkLines);
   }
 
@@ -105,7 +105,7 @@ class Game {
   getBoardForPlayer(playerID) {
     return this
       .boards
-      .find(b => b.playerID === playerID);
+      .find(b => b.player.playerID === playerID);
   }
 };
 

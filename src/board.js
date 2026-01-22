@@ -19,11 +19,11 @@ module.exports = class Board {
   moves = [];
   nextShapeType = null;
   occupiedPoints = [];
-  playerID;
+  player;
   replay = false; // used for debugging,
   score = 0n;
 
-  constructor({ top, right, bottom, left }, screen, game, playerID) {
+  constructor({ top, right, bottom, left }, screen, game, player) {
     this.top = top;
     this.right = right;
     this.bottom = bottom;
@@ -31,7 +31,7 @@ module.exports = class Board {
     this.screen = screen;
     this.game = game;
     this.algorithm = game.algorithm(game.seed);
-    this.playerID = playerID;
+    this.player = player;
     this.rando = new Rando(game.seed);
 
     if (this.isMainBoard) {
@@ -67,6 +67,7 @@ module.exports = class Board {
   heldShapeBottomBorder = '┗━━━━━━━━━━┛';
 
   drawBoard() {
+    this.screen.d(this.left + 1, this.top - 1, this.player.playerName); // TODO: use different color
     this.screen.d(this.left, this.top, this.topBorder);
 
     for (let i = this.top + 1; i < this.bottom; i++) {

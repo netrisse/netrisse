@@ -1,7 +1,7 @@
 const NetrisseClient = require('./client');
 const config = require('./config');
 const quit = require('./quit');
-const hallway = require('./hallway');
+const lobby = require('./lobby');
 const game = require('./game');
 const { debug } = require('netrisse-lib');
 const screen = require('./screen');
@@ -66,7 +66,7 @@ module.exports = function(seed, intro) {
             client.connect(seed)
               .then(() => {
                 game.client = client;
-                hallway(config.speed);
+                lobby.load(config.speed);
               })
               .catch(err => {
                 debug(err);
