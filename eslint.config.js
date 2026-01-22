@@ -5,9 +5,12 @@ module.exports = [
   {
     languageOptions: {
       globals: {
-        document: 'off',
-        screen: 'off',
-        top: 'off',
+        clearTimeout: 'false',
+        console: 'false',
+        module: 'false',
+        require: 'false',
+        setTimeout: 'false',
+        structuredClone: 'false',
       },
     },
   },
