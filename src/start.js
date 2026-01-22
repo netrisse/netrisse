@@ -8,9 +8,6 @@ const { messageTypeEnum } = require('netrisse-lib');
 const screen = require('./screen');
 const config = require('./config');
 
-const withResolvers = require('promise.withresolvers');
-withResolvers.shim();
-
 module.exports = function(speed) {
   let thisPlayerIsPaused = false;
   let thisPlayerID = game.client?.playerID || 0;
